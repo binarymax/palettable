@@ -1,0 +1,99 @@
+/* css reset and element defaults */
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+body, h1, h2, h3, div, td, input, option { font-family: "Lucida Grande", Helvetica, Arial, sans-serif; font-style: normal; font-variant: normal; }
+body {background-color:#e8e8e8; margin:0px; min-width:920px; min-height:500px; }
+hr	{ margin-top:5px; margin-bottom:5px; }
+h1 { color:#606060; font-size: 20px; text-align:center; }
+h2 { color:#606060; font-size: 18px; }
+h3 { color:#606060; font-size: 16px; }
+h4 { color:#606060; font-size: 14px;}
+ul { list-style-type:none; padding:0; margin-left:0; }
+ol { list-style-type:decimal; padding:0; margin-left:0; }
+li { font-size:12px; }
+a  { color:#7289A9; }
+a:hover { color:#F90; }
+a:visited { color:#606060; }
+img{ border:0px; }
+canvas { cursor:crosshair; }
+canvas:active { cursor:crosshair; }
+
+#menubar { background-color:#333; height:40px; position:fixed; z-index:1000; width:100%;}
+#title { display:inline; margin:10px; padding:10px;}
+#menu  { display:inline; margin:10px; padding:10px;}       
+.menuitem   { float:left; color:#fff8dc; font-size:18px; width:200px; padding:10px; z-index:1000;}
+.menuitem > ul  { background-color: rgba(255,255,255,0.5); border:1px solid #333; }
+.size 				{ background-color:#bbb; color:#333; padding:5px; border:1px solid #333; cursor:pointer; margin:4px;}
+.size:hover { background-color:#333; color:#bbb; }
+
+#new > #sizes { display:none;}
+#new:hover > #sizes {display:block;}
+
+#swatches { width:60px; float:left;  }
+#wheel 		 { float:right; margin:10px; }
+
+.panel { background-color:#fff; border:1px solid #333; position:absolute; margin:10px; top:60px; }
+.panel header { background-color: #bbb; height:27px; padding:3px; border-bottom:1px solid #333;}
+
+.config { right:100px; }
+
+.button { background-color:#daeae7;border:1px solid #333; cursor:pointer; padding:4px; margin:4px; width:110px; float:left; }
+.button:hover { background-color:#fafafa; }
+
+/* Workspace */
+.colors										{ float:right; width:40px; margin:5px; padding:0px;}
+.controls								{ display:block; clear:both;}
+.thumbs 									{ clear:both; display:block; }
+.thumb  									{ display:inline-block; background-color:transparent; margin:3px;}
+.thumb.active						{ background-color: #daeae7; } 
+.thumb > .tiny 				{ margin:5px; border:1px solid #333; width:32px; }
+.thumb > .buffer  		{ display:none; }
+
+.frames 									{ clear:both; display:block; }
+.frame  									{ margin:1px; } 
+.frame > .grid		  		{ float:left; position:absolute; z-index:1; margin:5px; border:1px solid #333;}
+.frame > .buffer  		{ float:left; position:absolute; z-index:98; margin:5px; border:1px solid #333;}
+.frame > .lines  			{ float:left; position:absolute; z-index:99; margin:5px; border:1px solid #333;}
+.frame > .paintable  { float:left; position:absolute; z-index:100; margin:5px; border:1px solid #333;}
+
+/* Playground */
+.cell											{ padding:10px; }
+.cell > .sprite				{ display:block; border:1px solid #333; margin:10px; }
+
+.transparentsml				{ background-image: url(/images/transparent_small.png); background-color: #fff; }
+.transparentmed				{ background-image: url(/images/transparent_medium.png); background-color: #fff; }
+.transparentlrg				{ background-image: url(/images/transparent_large.png); background-color: #fff; }
+
+/* Panels */
+.icons {float:right; font-weight:bold; color:#333;}
+.icon  {border:1px solid #333; margin:0px; padding:0px; margin-left:3px; padding-left:6px; padding-right:6px; cursor:pointer; }
+.icon:hover  { color:#fafafa; background-color:#333; }
+
+.tool       { margin:2px; }
+.swatch     { float:left; width:20px; height:20px; margin:2px; }
+
+.gauge {
+	display:inline;
+	width:165px;
+	height:20px;
+	padding:0px;
+	white-space: nowrap;
+}
+
+.gaugeline {
+	display:inline;
+	width:12px;
+	height:20px;
+	background-color:#DDD;
+	margin-left:1px;
+	margin-right:1px;
+	cursor:pointer;
+	font-size:14px;
+}
+
+.gaugeline.on {
+	background-color:#999;
+}
+
+.gaugeline:hover {
+	background-color:#333;
+}
