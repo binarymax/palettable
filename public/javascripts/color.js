@@ -40,6 +40,7 @@ var $color = window.$color = (function() {
 				wheel.active=true;
 				var c = $.getMouseCoords(e,canvasWheel);
 				color = wheel.getPixel(c.x,c.y);
+				if(c.x<200) setTimeout(function(){wheel.gradient(color);},0);
 				$($color).trigger("preview");
 			});
 			 			
@@ -47,6 +48,7 @@ var $color = window.$color = (function() {
 				if(wheel.active) {
 					var c = $.getMouseCoords(e,canvasWheel);				
 					color = wheel.getPixel(c.x,c.y);
+					if(c.x<200) setTimeout(function(){wheel.gradient(color);},0);
 					$($color).trigger("preview");
 				}
 			});
@@ -55,7 +57,8 @@ var $color = window.$color = (function() {
 				wheel.active=false;
 				var c = $.getMouseCoords(e,canvasWheel);
 				color = wheel.getPixel(c.x,c.y);
-				var swatch = Swatch.add("Swatch" + (swatches.length+1).toString(),color);		
+				var swatch = Swatch.add("Swatch" + (swatches.length+1).toString(),color);
+				if(c.x<200) setTimeout(function(){wheel.gradient(color);},0);		
 				swatch.use();
 			});
 						
@@ -190,30 +193,55 @@ var $color = window.$color = (function() {
 			
 		}
 		
+		//Gets the gradient for the color
 		wheel.gradient = function(rgb) {
+				
 			
 			var img = surface.image;
 			var data = img.data;
 			
-			var miny = 210,maxy=300,x;
-			var yd = (maxy-miny)/255;
-			var rd = rgb.r/yd;
-			var gd = rgb.g/yd;
-			var bd = rgb.b/yd;
-			var diff = function(c,y) { var yd2 = (maxy-y)/255; return c *= yd2;};
-			for(var y=miny;y<maxy;y++) {
-				rd = diff(rgb.r,y);
-				gd = diff(rgb.g,y);
-				bd = diff(rgb.b,y);
-					
-				for(var x=0;x<255;x++) {				
-						i=(x+y*diameter)*4;
+			var diff1 = function(y,d) { return parseInt(y*d); };
+			var diff2 = function(y,d) { return parseInt(y*d); };
+
+			var r1 = rgb.r / 255;
+			var g1 = rgb.g / 255;
+			var b1 = rgb.b / 255;
+
+
+			var r2 = rgb.r / 255;
+			var g2 = rgb.g / 255;
+			var b2 = rgb.b / 255;
+
+			for(var y=0;y<127;y++) {
+				
+				var rr = diff1(y*2,r1);	
+				var gg = diff1(y*2,g1);
+				var bb = diff1(y*2,b1);
+				
+				for(var x=220;x<width;x++) {
+						var i=(x+y*height)*4;
 						//Plot
-						data[i+0] = rd;
-						data[i+1] = gd;
-						data[i+2] = bd;
+						data[i+0] = rr;
+						data[i+1] = gg;
+						data[i+2] = bb;
 						data[i+3] = 255;
 				}
+				
+				var yy = y + 127;
+				var rr = diff2(yy*2,r2);	
+				var gg = diff2(yy*2,g2);
+				var bb = diff2(yy*2,b2);
+
+				for(var x=220;x<width;x++) {
+						var i=(x+yy*height)*4;
+						//Plot
+						data[i+0] = rr;
+						data[i+1] = gg;
+						data[i+2] = bb;
+						data[i+3] = 255;
+				}
+
+
 			}
 			
 			surface.context.putImageData(img,0,0);
