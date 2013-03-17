@@ -48,7 +48,7 @@ var $settings = window.$settings = (function() {
 	};
 	
 	Setting.wrapper = function(name) {
-		return $("<li class='setting'><span>"+name+":</span></li>");
+		return $("<li class='setting'><label class='settinglabel'>"+name+":</label></li>");
 	};
 	
 	//Static Setting UI functions
@@ -58,7 +58,7 @@ var $settings = window.$settings = (function() {
 			var slider = $("<div class='slider'></div>");
 			var obj = Setting.wrapper(self.name);
 			slider.append(slidervalue)
-			obj.append(slider);
+			obj.find('.settinglabel').append(slider);
 			parentElement.append(obj);
 			slidervalue.attr("id",self.id);
 			self.guage = new $.guage(slidervalue,self.min,self.max,self.value,function(guagevalue){
@@ -68,6 +68,14 @@ var $settings = window.$settings = (function() {
 	};
 	
 	Setting.checkbox = function(parentElement) {
+			var self = this;
+			var input = $("<input type='checkbox' class='checkboxvalue' checked='checked' value='1' disabled='true' />");
+			var wrapper = $("<span class='wrapper'></span>");
+			var obj = Setting.wrapper(self.name);
+			wrapper.append(input);
+			obj.find('.settinglabel').append(wrapper);
+			parentElement.append(obj);
+			input.attr("id",self.id);	
 	};
 	
 	Setting.textbox = function(parentElement) {
@@ -76,7 +84,7 @@ var $settings = window.$settings = (function() {
 			var wrapper = $("<div class='wrapper'></div>");
 			var obj = Setting.wrapper(self.name);
 			wrapper.append(textvalue);
-			obj.append(wrapper);
+			obj.find('.settinglabel').append(wrapper);
 			parentElement.append(obj);
 			textvalue.attr("id",self.id);	
 	};
@@ -87,7 +95,7 @@ var $settings = window.$settings = (function() {
 			var wrapper = $("<div class='wrapper'></div>");
 			var obj = Setting.wrapper(self.name);
 			wrapper.append(textvalue);
-			obj.append(wrapper);
+			obj.find('.settinglabel').append(wrapper);
 			parentElement.append(obj);
 			textvalue.attr("id",self.id);
 	};
@@ -97,6 +105,8 @@ var $settings = window.$settings = (function() {
 	//Public methods
 	return {
 		name:"settings",
+		title:"Settings",
+		get height() { return 150; },
 		load:load
 	};	
 

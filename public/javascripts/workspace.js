@@ -23,6 +23,7 @@ var $workspace = window.$workspace = (function() {
 		var jq = this.jq = $($templates.workspace({
 			id:self.id,
 			title:width + 'x' + height,
+			name:"workspace",
 			width:width,
 			height:height,
 			scalewidth:scalewidth,
@@ -69,7 +70,9 @@ var $workspace = window.$workspace = (function() {
 			jq.find(".thumb").removeClass("active");
 			thumb.addClass("active");
 			self.useFrame(frameid);
-		})
+		});
+		
+		jq.draggable(".move");
 
 		//Playground
 		self.playground = $playground.add(self,width,height);
@@ -150,7 +153,13 @@ var $workspace = window.$workspace = (function() {
 			},
 			draw: function(delegate) {
 				setTimeout(function(){
+					
 					delegate.call(_frame,_frame.thumb.context);
+					var select = _frame.thumb.selection;
+					if (select) {
+						var copy = _frame.thumb.context.getImageData(select.x0,select.y0,select.width,select.height);
+						_frame.thumb.context.clear().putImageData(copy,select.x0,select.y0);
+					}
 					_frame.context.clear().drawImage(_frame.thumb.canvas,0,0);
 					_frame.jq.trigger("change",_frame);
 				},0); 
@@ -158,9 +167,21 @@ var $workspace = window.$workspace = (function() {
 			preview: function(delegate) { 
 				setTimeout(function(){
 					delegate.call(_frame,_frame.thumb.preview().context.clear());
+					var select = _frame.thumb.selection;
+					if (select) {
+						var copy = _frame.thumb.preview().context.getImageData(select.x0,select.y0,select.width,select.height);
+						_frame.thumb.preview().context.clear().putImageData(copy,select.x0,select.y0);
+					}					
 					_frame.preview().context.clear().drawImage(_frame.thumb.preview().canvas,0,0);
 				},0); 
-			}
+			},
+			styler: function(delegate) {
+				setTimeout(function(){
+					delegate.call(_frame,_frame.styler);
+					//_frame.styler.clear().drawImage(_frame.styler.canvas,0,0);
+				},0); 
+			},
+
 		};
 	
 	//===============================================================
@@ -186,6 +207,9 @@ var $workspace = window.$workspace = (function() {
 		this.bufferCanvas  = this.buffer[0];
 		this.bufferContext = $(this.buffer).context(null,scale);
 
+		this.stylerDiv = jq.find(".styler").canvas(width,height,scale);
+		this.stylerDiv.clear = function() { self.stylerDiv.children(".outline1,.outline2").remove(); return self.stylerDiv; };
+		
 		this.lines = jq.find(".lines").canvas(scalewidth,scaleheight);
 		this.linesCanvas  = this.lines[0];
 		this.linesContext = $(this.lines).context();
@@ -205,7 +229,8 @@ var $workspace = window.$workspace = (function() {
 		//Prototypes
 		Frame.prototype = {
 			get context() { return this.gridContext; },
-			get canvas() { return this.gridCanvas; }
+			get canvas() { return this.gridCanvas; },
+			get styler()   { return this.stylerDiv; }
 		};
 		Frame.prototype.preview = function() {
 			var self = this;
@@ -241,6 +266,8 @@ var $workspace = window.$workspace = (function() {
 		this.buffer = jq.find(".buffer").canvas(width,height);
 		this.bufferCanvas  = this.buffer[0];
 		this.bufferContext = $(this.buffer).context();
+		
+		this.selection = null;
 
 	};
 	
@@ -248,7 +275,7 @@ var $workspace = window.$workspace = (function() {
 		//Prototypes
 		Thumb.prototype = {
 			get context() { return this.tinyContext; },
-			get canvas() { return this.tinyCanvas; }			
+			get canvas() { return this.tinyCanvas; }
 		};
 		Thumb.prototype.preview = function() {
 			var self = this;
@@ -261,24 +288,32 @@ var $workspace = window.$workspace = (function() {
 	
 	//===============================================================
 	var gridLines = function(g,width,height,scale) {
+		var strokeStyle = "rgba(200,200,255,0.5)"; 
+		var rgba = {r:200,g:200,b:255,a:255};
 		for(var x=0;x<width;x++){
+			$tools.bresehnam(x*scale,0,x*scale,height*scale,g,width*scale,height*scale,rgba);
+			/*
 			g.beginPath();			
-			g.strokeStyle = "#aaf";
+			g.strokeStyle = strokeStyle;
 			g.strokeWidth = 1;
 			g.moveTo(x*scale,0);
 			g.lineTo(x*scale,height*scale);
 			g.closePath();
-			g.stroke();			
+			g.stroke();
+			*/			
 		}
 		
 		for(var y=0;y<height;y++){
+			$tools.bresehnam(0,y*scale,width*scale,y*scale,g,width*scale,height*scale,rgba);
+			/*
 			g.beginPath();			
-			g.strokeStyle = "#aaf";
+			g.strokeStyle = strokeStyle;
 			g.strokeWidth = 1;
 			g.moveTo(0,y*scale);
 			g.lineTo(width*scale,y*scale);
 			g.closePath();
-			g.stroke();			
+			g.stroke();
+			*/			
 		}			
 	}
 

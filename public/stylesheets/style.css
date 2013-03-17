@@ -34,7 +34,10 @@ canvas:active { cursor:crosshair; }
 .panel { background-color:#fff; border:1px solid #333; position:absolute; margin:10px; top:60px; }
 .panel header { background-color: #bbb; height:27px; padding:3px; border-bottom:1px solid #333;}
 
-.config { right:100px; }
+.swatches { right:100px; }
+.playground { right:100px; }
+.tools { right:100px; }
+.settings { right:100px; }
 
 .button { background-color:#daeae7;border:1px solid #333; cursor:pointer; padding:4px; margin:4px; width:110px; float:left; }
 .button:hover { background-color:#fafafa; }
@@ -44,16 +47,20 @@ canvas:active { cursor:crosshair; }
 .controls								{ display:block; clear:both;}
 .thumbs 									{ clear:both; display:block; }
 .thumb  									{ display:inline-block; background-color:transparent; margin:3px;}
-.thumb.active						{ background-color: #daeae7; } 
+.thumb.active						{ border:3px solid #daeae7; margin:0px; padding:0px; } 
 .thumb > .tiny 				{ margin:5px; border:1px solid #333; width:32px; }
-.thumb > .buffer  		{ display:none; }
+.thumb > .buffer  		{ display:none; margin:0px; }
 
 .frames 									{ clear:both; display:block; }
 .frame  									{ margin:1px; } 
 .frame > .grid		  		{ float:left; position:absolute; z-index:1; margin:5px; border:1px solid #333;}
 .frame > .buffer  		{ float:left; position:absolute; z-index:98; margin:5px; border:1px solid #333;}
+.frame > .styler  		{ float:left; position:absolute; z-index:98; margin:5px; border:1px solid #333;}
 .frame > .lines  			{ float:left; position:absolute; z-index:99; margin:5px; border:1px solid #333;}
 .frame > .paintable  { float:left; position:absolute; z-index:100; margin:5px; border:1px solid #333;}
+
+.styler > .outline1			{ position:absolute; border:2px dashed #333; }
+.styler > .outline2			{ position:absolute; border:2px dotted #333; }
 
 /* Playground */
 .cell											{ padding:10px; }

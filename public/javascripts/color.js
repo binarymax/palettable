@@ -207,11 +207,6 @@ var $color = window.$color = (function() {
 			var g1 = rgb.g / 255;
 			var b1 = rgb.b / 255;
 
-
-			var r2 = rgb.r / 255;
-			var g2 = rgb.g / 255;
-			var b2 = rgb.b / 255;
-
 			for(var y=0;y<127;y++) {
 				
 				var rr = diff1(y*2,r1);	
@@ -228,9 +223,9 @@ var $color = window.$color = (function() {
 				}
 				
 				var yy = y + 127;
-				var rr = diff2(yy*2,r2);	
-				var gg = diff2(yy*2,g2);
-				var bb = diff2(yy*2,b2);
+				var rr = diff2(yy*2,r1);	
+				var gg = diff2(yy*2,g1);
+				var bb = diff2(yy*2,b1);
 
 				for(var x=220;x<width;x++) {
 						var i=(x+yy*height)*4;
@@ -293,6 +288,7 @@ var $color = window.$color = (function() {
 		
 		return {
 			name:"swatches",
+			title:"Color Picker",
 			load:load,
 			getColor:function(){ return color; },
 			setColor:function(rgba){ color = rgba },

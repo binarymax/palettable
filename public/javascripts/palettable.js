@@ -116,7 +116,7 @@ var $paint = window.$paint = (function($){
 	}
 	
 	//------------------------------------------------------------------
-	//Initializes a canvas width and height
+	//Initializes a canvas/div width and height
 	$.fn.canvas = function(width,height,scale) {
 		var canvas = this;
 		scale = scale || 1;
@@ -158,6 +158,47 @@ var $paint = window.$paint = (function($){
 		context.scaled = scale;
 		return context;
 	};
+	
+	$.nobubble = function(e) {
+		if (e.stopPropagation) e.stopPropagation(); 
+		if (e.preventDefault) e.preventDefault();
+		return false;
+	}
+	
+	$.fn.draggable = (function() {
+		var _offset;
+		var starter = function(target) {
+			return function(e) { 
+				_offset = target.offset();
+				_offset = { top: e.pageY - _offset.top, left: e.pageX - _offset.left };			
+				$(this).data("drag",true); 
+				return $.nobubble(e); 
+			};
+		};
+		
+		var end = function(e) { 
+			$(this).data("drag",false);
+			return $.nobubble(e); 
+		};
+				
+		var mover = function(target,delegate) { 
+			return function(e) { 
+				if($(this).find(delegate).data("drag")) {
+					var top  = e.pageY - _offset.top + "px";
+					var left = e.pageX - _offset.left + "px";
+					target.css({top:top,left:left});
+				} 
+			}; 
+		};
+		
+		return function(delegate) {
+			if (!delegate) return false;
+			var target = $(this);			
+			target.on("mousedown",delegate,starter(target));
+			target.on("mouseup",delegate,end);
+			target.on("mousemove",mover(target,delegate));
+		};
+	})();
 			
 	//------------------------------------------------------------------
 	//Shows a palette
@@ -206,15 +247,20 @@ var $paint = window.$paint = (function($){
 	//------------------------------------------------------------------
 	//Load helper
 	var load = function() {
+		var total = 0, lastheight=0;
 		for(var i=0,l=arguments.length;i<l;i++) {
 			var item = arguments[i];
+			var height = item.height||300; 
 			var panel = $($templates.panel({
-				id:item.name,
-				title:item.name,
+				id:_panelid,
+				title:item.title,
+				name:item.name,
 				panelwidth:item.width||400,
-				panelheight:item.height||300,
-				top:(_panelid++*300)+50
+				panelheight:height,
+				top:item.top || lastheight + 50
 			}));
+			panel.draggable(".move");
+			lastheight += height;
 			$.ui.paint.append(panel);
 			$.ui[item.name] = panel;
 			item.load(panel.find(".content"));
@@ -228,8 +274,21 @@ var $paint = window.$paint = (function($){
 		//Initialize Templates:
 		var $templates = window.$templates = {};
 		$('script[type="text/template"]').each(function(){
-			var type = $(this).attr('data-type');
-			$templates[type] = _.template($(this).html());
+			var $self = $(this);
+			var type  = $self.attr('data-type');
+			var prnt  = $self.attr('data-inherit');
+			if (prnt && prnt.length) {
+				prnt = prnt.split('#');
+				var container = "." + (prnt[1] || "content") + ":first";
+				var $parent = $($templates[(prnt[0]||"panel")]);
+				$parent.find(container).append($self.html());
+				console.log($parent.html);
+				//$templates[type] = _.template($parent.html());
+				
+			} else {
+				$templates[type] = _.template($self.html());
+			}
+			
 		});
 
 		//Declare global UI objects

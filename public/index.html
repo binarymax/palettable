@@ -6,6 +6,7 @@
 	<script type="text/javascript" src="/javascripts/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="/javascripts/underscore-1.4.3.min.js"></script>
 	<script type="text/javascript" src="/javascripts/keypress-1.0.3.js"></script>
+	<script type="text/javascript" src="/javascripts/smooth.min.js"></script>
 	<script type="text/javascript" src="/javascripts/palettable.js"></script>
 	<script type="text/javascript" src="/javascripts/guage.js"></script>
 	<script type="text/javascript" src="/javascripts/settings.js"></script>
@@ -42,16 +43,31 @@
 	</section>
 	
 	<script type="text/template" data-type="panel">
-		<div id="panel{{id}}" style="width:{{panelwidth}}px;height:{{panelheight}}px;top:{{top}}px;" class="panel config">
+		<div id="{{name}}{{id}}" style="width:{{panelwidth}}px;height:{{panelheight}}px;top:{{top}}px;" class="panel {{name}}">
 			<header>
 				<span class="title">{{title}}</span>
 				<div  class="icons"><span class="icon move">+</span> <span class="icon close">x</span></div>
 			</header>
 			<section class="content">
-				<ul id="{{title}}"></ul>
+				<ul id="{{name}}"></ul>
 			</section>
 		</div>
 	</script>
+
+	<!--
+	<script type="text/template" data-type="workspace" data-inherit="panel#content">
+				<div class="controls">					
+					<div class="saveframe button">Save Frame</div>
+					<div class="addframe button">Add Frame</div>
+					<div class="cloneframe button">Clone Frame</div>
+					<div class="thumbs"></div>
+				</div>
+				<div class="frames"></div>
+				<ul class="colors" style="height:{{scaleheight}}px;overflow-y:scroll;"></ul>
+			</section>
+	</script>
+ -->
+
 	
 	<script type="text/template" data-type="workspace">
 		<div id="workspace{{id}}" style="width:{{panelwidth}}px;height:{{panelheight}}px;" class="panel workspace">
@@ -71,7 +87,7 @@
 			</section>
 		</div>
 	</script>
-
+ 
 	<script type="text/template" data-type="thumb">
 		<div id="thumb{{id}}" class="thumb" data-frameid="{{frameid}}">
 			<canvas class="tiny transparentmed"></canvas>
@@ -84,6 +100,7 @@
 			<canvas class="grid transparentlrg"></canvas>
 			<canvas class="buffer"></canvas>
 			<canvas class="lines"></canvas>
+			<div    class="styler"></div>
 			<canvas class="paintable"></canvas>
 		</div>
 	</script>
@@ -94,6 +111,10 @@
 		</li>
 	</script>
 
+	<script type="text/template" data-type="selection">
+		<div class="outline1" style="top:{{y0}}px; left:{{x0}}px; width:{{width}}; height:{{height}}; min-width:{{width}}; min-height:{{height}};">&nbsp;</div>
+	</script>
+
 	<script type="text/template" data-type="tool">
 		<li id="tool{{id}}" class="tool button">{{name}}</li>
 	</script>
@@ -101,6 +122,13 @@
 	<script type="text/template" data-type="swatch">
 		<li id="swatch{{id}}" class="swatch" style="background-color:{{hex}};" title="{{name}}">&nbsp;</li>
 	</script>
+
+	<script type="text/template" data-type="sheet">
+		<li id="sheet{{id}}" class="sheet">
+			<canvas class="view"></canvas>
+		</li>
+	</script>
+
 
 </body>
 </html>

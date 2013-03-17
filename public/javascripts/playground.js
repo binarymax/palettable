@@ -103,8 +103,10 @@ var $playground = window.$playground = (function() {
 	
 	return {
 		name:"playground",
+		title:"Playground",
 		load:load,
-		add:Playgrounds.add
+		add:Playgrounds.add,
+		get height() { return 150; },
 	};
 	
 })();
